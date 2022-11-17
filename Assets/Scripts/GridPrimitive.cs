@@ -14,7 +14,7 @@ public class GridPrimitive : MonoBehaviour
             for (int j = 0; j < size.y; j++)
             {
                 Gizmos.color = new Color(0f, 1f, 0f, 0.5f);
-                Gizmos.DrawCube(transform.position + new Vector3(i, -0.4f, j), new Vector3(1, 0.2f, 1));
+                Gizmos.DrawCube(transform.position + new Vector3(i, 0, j), new Vector3(1, 0.2f, 1));
             }
         }
     }

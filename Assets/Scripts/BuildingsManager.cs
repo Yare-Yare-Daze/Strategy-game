@@ -46,7 +46,7 @@ public class BuildingsManager : MonoBehaviour
                 if (canPlace && IsPlaceTaken(xOnGrid, yOnGrid)) canPlace = false;
 
 
-                selectedBuild.transform.position = new Vector3(xOnGrid, worldPos.y, yOnGrid) + new Vector3(0f, 0.4f, 0f);
+                selectedBuild.transform.position = new Vector3(xOnGrid, worldPos.y, yOnGrid);
                 selectedBuild.SetTransparent(canPlace);
 
                 if (canPlace && Input.GetMouseButtonDown(0))
