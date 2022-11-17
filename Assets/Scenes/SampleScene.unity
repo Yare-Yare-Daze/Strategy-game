@@ -837,7 +837,7 @@ MonoBehaviour:
         m_MethodName: StartPlaceBuilding
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8828170966726722949, guid: 5933705c1471eaa4c84542ebb46b5ab8, type: 3}
+          m_ObjectArgument: {fileID: 1158516978345286036, guid: 926e8cd05c5f3cd459fad867fcffd7f0, type: 3}
           m_ObjectArgumentAssemblyTypeName: Building, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0

@@ -4,30 +4,34 @@ using UnityEngine;
 
 public class Building : GridPrimitive
 {
-    private List<Renderer> childRenderers;
+    private Renderer _renderer;
+    private List<Color> _originColors;
 
-    private void Start()
+    private void Awake()
     {
-        childRenderers = new List<Renderer>();
-        for (int i = 0; i < transform.childCount; i++)
+        _renderer = GetComponentInChildren<Renderer>();
+        _originColors = new List<Color>();
+        foreach (var material in _renderer.materials)
         {
-            childRenderers.Add(transform.GetChild(i).GetComponent<Renderer>());
+            _originColors.Add(material.color);
+            Debug.Log(material.color.ToString());
         }
     }
 
     public void SetTransparent(bool canPlace)
     {
-        foreach (Renderer renderer in childRenderers)
+        foreach (var material in _renderer.materials)
         {
-            renderer.material.color = canPlace ? Color.green : Color.red;
+            material.color = canPlace ? Color.green : Color.red;
         }
     }
 
     public void SetNormalColor()
     {
-        foreach(Renderer renderer in childRenderers)
+        for (int i = 0; i < _renderer.materials.Length; i++)
         {
-            renderer.material.color = Color.white;
+            Debug.Log(_originColors[i].ToString());
+            _renderer.materials[i].color = _originColors[i];
         }
     }
 
