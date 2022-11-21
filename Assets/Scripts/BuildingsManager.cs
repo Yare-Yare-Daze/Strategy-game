@@ -9,6 +9,9 @@ public class BuildingsManager : MonoBehaviour
     private Building[,] buildingGrid;
     private Building selectedBuild;
 
+    private Vector3 mouseReferencePos = Vector3.zero;
+    private bool needRotate = false;
+
     private void Awake()
     {
         buildingGrid = new Building[gridSize.x, gridSize.y];
@@ -16,7 +19,7 @@ public class BuildingsManager : MonoBehaviour
 
     public void StartPlaceBuilding(Building prefab)
     {
-        if(selectedBuild != null)
+        if (selectedBuild != null)
         {
             Destroy(selectedBuild.gameObject);
         }
@@ -45,14 +48,57 @@ public class BuildingsManager : MonoBehaviour
 
                 if (canPlace && IsPlaceTaken(xOnGrid, yOnGrid)) canPlace = false;
 
-
-                selectedBuild.transform.position = new Vector3(xOnGrid, worldPos.y, yOnGrid);
-                selectedBuild.SetTransparent(canPlace);
-
-                if (canPlace && Input.GetMouseButtonDown(0))
+                if (needRotate)
                 {
-                    PlaceSelectedBuild(xOnGrid, yOnGrid);
+                    Vector3 mouseOffset = Input.mousePosition - mouseReferencePos;
+                    Vector3 rotation = new Vector3(0f, -(mouseOffset.x + mouseOffset.y), 0f);
+                    selectedBuild.transform.Rotate(rotation);
+                    mouseReferencePos = Input.mousePosition;
                 }
+                else
+                {
+                    selectedBuild.transform.position = new Vector3(xOnGrid, worldPos.y, yOnGrid);
+                    selectedBuild.SetTransparent(canPlace);
+                }
+
+                Debug.Log("canPlace before mouse = " + canPlace);
+
+                if (!needRotate && canPlace && Input.GetMouseButtonDown(0))
+                {
+                    Debug.Log("Invoked GetMouseButtonDown");
+                    //PlaceSelectedBuild(xOnGrid, yOnGrid);
+                    needRotate = true;
+
+                    mouseReferencePos = Input.mousePosition;
+                    PlaceSelectedBuildOnGrid(xOnGrid, yOnGrid);
+                }
+
+                if(needRotate && Input.GetMouseButtonUp(0))
+                {
+                    Debug.Log("Invoked GetMouseButtonUp");
+                    RefrashSelectedBuild();
+                    needRotate = false;
+                }
+
+
+                /*if (canPlace && Input.GetMouseButtonDown(0))
+                {
+                    Debug.Log("Invoked GetMouseButtonDown");
+                    //PlaceSelectedBuild(xOnGrid, yOnGrid);
+                    needRotate = true;
+
+                    mouseReferencePos = Input.mousePosition;
+                    PlaceSelectedBuildOnGrid(xOnGrid, yOnGrid);
+
+                }
+
+                if (canPlace && Input.GetMouseButtonUp(0))
+                {
+                    Debug.Log("Invoked GetMouseButtonUp");
+                    RefrashSelectedBuild();
+                    needRotate = false;
+                }*/
+
             }
         }
     }
@@ -70,7 +116,7 @@ public class BuildingsManager : MonoBehaviour
         return false;
     }
 
-    private void PlaceSelectedBuild(int x, int y)
+    private void PlaceSelectedBuildOnGrid(int x, int y)
     {
         for (int i = 0; i < selectedBuild.size.x; i++)
         {
@@ -79,7 +125,10 @@ public class BuildingsManager : MonoBehaviour
                 buildingGrid[x + i, y + j] = selectedBuild;
             }
         }
+    }
 
+    private void RefrashSelectedBuild()
+    {
         selectedBuild.SetNormalColor();
         selectedBuild = null;
     }

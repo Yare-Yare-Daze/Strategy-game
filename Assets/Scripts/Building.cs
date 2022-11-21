@@ -14,7 +14,7 @@ public class Building : GridPrimitive
         foreach (var material in _renderer.materials)
         {
             _originColors.Add(material.color);
-            Debug.Log(material.color.ToString());
+            
         }
     }
 
@@ -30,7 +30,7 @@ public class Building : GridPrimitive
     {
         for (int i = 0; i < _renderer.materials.Length; i++)
         {
-            Debug.Log(_originColors[i].ToString());
+            
             _renderer.materials[i].color = _originColors[i];
         }
     }
