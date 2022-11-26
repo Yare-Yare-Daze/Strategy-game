@@ -6,7 +6,7 @@ public class BuildingsManager : MonoBehaviour
 {
     public Vector2Int gridSize = new Vector2Int(10, 10);
 
-    private Building[,] buildingGrid;
+    private GridPrimitive[,] objectsGrid;
     private Building selectedBuild;
 
     private Vector3 mouseReferencePos = Vector3.zero;
@@ -14,7 +14,7 @@ public class BuildingsManager : MonoBehaviour
 
     private void Awake()
     {
-        buildingGrid = new Building[gridSize.x, gridSize.y];
+        objectsGrid = new GridPrimitive[gridSize.x, gridSize.y];
     }
 
     public void StartPlaceBuilding(Building prefab)
@@ -57,16 +57,13 @@ public class BuildingsManager : MonoBehaviour
                 }
                 else
                 {
+                    
                     selectedBuild.transform.position = new Vector3(xOnGrid, worldPos.y, yOnGrid);
                     selectedBuild.SetTransparent(canPlace);
                 }
 
-                Debug.Log("canPlace before mouse = " + canPlace);
-
                 if (!needRotate && canPlace && Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log("Invoked GetMouseButtonDown");
-                    //PlaceSelectedBuild(xOnGrid, yOnGrid);
                     needRotate = true;
 
                     mouseReferencePos = Input.mousePosition;
@@ -75,7 +72,6 @@ public class BuildingsManager : MonoBehaviour
 
                 if(needRotate && Input.GetMouseButtonUp(0))
                 {
-                    Debug.Log("Invoked GetMouseButtonUp");
                     RefrashSelectedBuild();
                     needRotate = false;
                 }
@@ -109,7 +105,7 @@ public class BuildingsManager : MonoBehaviour
         {
             for (int j = 0; j < selectedBuild.size.y; j++)
             {
-                if (buildingGrid[x + i, y + j] != null) return true;
+                if (objectsGrid[x + i, y + j] != null) return true;
             }
         }
 
@@ -122,7 +118,7 @@ public class BuildingsManager : MonoBehaviour
         {
             for (int j = 0; j < selectedBuild.size.y; j++)
             {
-                buildingGrid[x + i, y + j] = selectedBuild;
+                objectsGrid[x + i, y + j] = selectedBuild;
             }
         }
     }
